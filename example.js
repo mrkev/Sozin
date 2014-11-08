@@ -1,5 +1,5 @@
 var slf = require('./index')
-slf.getJSON('fall', 'final').then(console.log)
+slf.getJSON('fall', 'prelim').then(console.log)
 
 /*
 [ ...,

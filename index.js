@@ -60,14 +60,24 @@ module.exports = (function () {
 						var src = $('pre').html().split("\r\n");
 							  src = clean(src, '').map(function (x) {
 							  	var objarr = clean(x.split("   ").map(function (y) { return y.trim(); }), "");
-							  	if (objarr === []) return null
-							  	if (objarr[0].indexOf("<--") > -1) return null 
-							  	return {
+							  	console.log(objarr)
+							  	if (objarr === [] || !objarr) return null
+							  	if (objarr[0] === undefined || objarr[0].indexOf("<!--") > -1) return null 
+							  	
+							  	var obj = {
 							  		class_sect : objarr[0],
 							  		date			 : objarr[1],
-							  		time 			 : objarr[2],
-							  		location   : objarr[3],
 							  	}
+
+							  	if (objarr.length === 3) {
+							  		obj.location = objarr[2];
+							  		return obj;
+							  	}
+							  	
+							  	obj.time = objarr[2];
+							  	obj.location = objarr[3];
+
+							  	return obj;
 							  });
 							  
 			    	resolve(clean(src, null));
