@@ -60,6 +60,8 @@ module.exports = (function () {
 						var src = $('pre').html().split("\r\n");
 							  src = clean(src, '').map(function (x) {
 							  	var objarr = clean(x.split("   ").map(function (y) { return y.trim(); }), "");
+							  	if (objarr === []) return null
+							  	if (objarr[0].indexOf("<--") > -1) return null 
 							  	return {
 							  		class_sect : objarr[0],
 							  		date			 : objarr[1],
@@ -68,7 +70,7 @@ module.exports = (function () {
 							  	}
 							  });
 							  
-			    	resolve(src);
+			    	resolve(clean(src, null));
 			  	}
 			});
 		});
