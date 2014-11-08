@@ -1,0 +1,25 @@
+{
+  "name": "Sozin",
+  "version": "0.0.0",
+  "description": "Mines exam dates and locations from cornell's website",
+  "repository": "https://github.com/mrkev/Sozin.git",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "RedAPI",
+    "NetPrint"
+  ],
+  "author": "mrkev",
+  "license": "ISC",
+  "dependencies": {
+    "es6-promise": "^1.0.0",
+    "jsdom": "^0.11.1"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "chai-as-promised": "^4.1.1",
+    "mocha": "^1.20.1"
+  }
+}
