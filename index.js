@@ -35,9 +35,10 @@ module.exports = (function () {
 		if (!type || !term) return Promise.resolve({});
 
 		var yoda = 
-					 (term === 'FALL')   ? 
-					 (type === 'PRELIM') ? 'PRELF' : 'EXFA' 
-				 : (type === 'PRELIM') ? 'PRELS' : 'EXSP'
+					 (term === 'FALL') ? 
+					   ((type === 'PRELIM') ? 'PRELF' : 'EXFA') 
+					 : ((type === 'PRELIM') ? 'PRELS' : 'EXSP')
+
 
 		var url   = self.url + yoda + '.html';
 
@@ -52,33 +53,32 @@ module.exports = (function () {
 			    function (err, window) {
 			    	var $ = window.jQuery;
 
-			    	if (err !== null) {
-			    		console.error(err);
-			    		reject(err);
-			    	}
-			    	
-						var src = $('pre').html().split("\r\n");
-							  src = clean(src, '').map(function (x) {
-							  	var objarr = clean(x.split("   ").map(function (y) { return y.trim(); }), "");
-							  	console.log(objarr)
-							  	if (objarr === [] || !objarr) return null
-							  	if (objarr[0] === undefined || objarr[0].indexOf("<!--") > -1) return null 
-							  	
-							  	var obj = {
-							  		class_sect : objarr[0],
-							  		date			 : objarr[1],
-							  	}
+			    	if (err !== null) reject(err);
+			    	if (!$('pre').html()) resolve({});
 
-							  	if (objarr.length === 3) {
-							  		obj.location = objarr[2];
-							  		return obj;
-							  	}
-							  	
-							  	obj.time = objarr[2];
-							  	obj.location = objarr[3];
+						var src = $('pre').html().split("\n");
+						
+						src = clean(src, '').map(function (x) {
+							var objarr = clean(x.split("   ").map(function (y) { return y.trim(); }), "");
+							//console.log(objarr)
+							if (objarr === [] || !objarr) return null
+							if (objarr[0] === undefined || objarr[0].indexOf("<!--") > -1) return null 
+							
+							var obj = {
+								class_sect : objarr[0],
+								date			 : objarr[1],
+							}
 
-							  	return obj;
-							  });
+							if (objarr.length === 3) {
+								obj.location = objarr[2];
+								return obj;
+							}
+							
+							if (objarr[2]) obj.time = objarr[2];
+							if (objarr[3]) obj.location = objarr[3];
+
+							return obj;
+						});
 							  
 			    	resolve(clean(src, null));
 			  	}
@@ -89,7 +89,7 @@ module.exports = (function () {
 	// http://stackoverflow.com/questions/281264/remove-empty-elements-from-an-array-in-javascript
 	var clean = function(array, deleteValue) {
 	  for (var i = 0; i < array.length; i++) {
-	    if (array[i] == deleteValue) {         
+	    if (array[i] === deleteValue) {         
 	      array.splice(i, 1);
 	      i--;
 	    }
