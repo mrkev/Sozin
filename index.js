@@ -79,7 +79,8 @@ module.exports = (function () {
 
 							return obj;
 						});
-							  
+						
+						if (src[0].date === "Final exam date and time") src.shift()
 			    	resolve(clean(src, null));
 			  	}
 			});
